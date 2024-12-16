@@ -5,7 +5,7 @@
 	<!-- Pour associer deux expressions on utilise l'identifiant -->
 	<!-- 	exemple : le model de l'entite #30 est pointé par son attribut model avec #1  -->
 	<Model id="#1" />
-	<Entity model="#1" id="#20" name="Balise"/>
+	<Entity model="#1" id="#20" name="baLise"/>
 	<Attribute entity="#20" id="#21" name="BaliseID" type="int" />
 	<Entity model="#1" id="#30" name="Satellite"/>
 </Root>

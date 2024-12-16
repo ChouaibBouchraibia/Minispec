@@ -31,9 +31,8 @@ public class JavaGenerator extends Visitor {
 
     @Override
     public void visitEntity(Entity entity) {
-        code.append("public class ").append(entity.getName()).append(" {\n");
 
-
+        code.append("public class ").append(capitalize(entity.getName())).append(" {\n");
         for (Attribute attribute : entity.getAttributes()) {
             code.append("\tprivate ").append(attribute.getType()).append(" ").append(attribute.getName()).append(";\n");
         }
@@ -44,18 +43,23 @@ public class JavaGenerator extends Visitor {
 
 
         for (Attribute attribute : entity.getAttributes()) {
-            String capitalized = capitalize(attribute.getName());
-            code.append("\tpublic ").append(attribute.getType()).append(" get").append(capitalized).append("() {\n")
-                    .append("\t\treturn ").append(attribute.getName()).append(";\n")
-                    .append("\t}\n\n");
-
-            code.append("\tpublic void set").append(capitalized).append("(").append(attribute.getType()).append(" ")
-                    .append(attribute.getName()).append(") {\n")
-                    .append("\t\tthis.").append(attribute.getName()).append(" = ").append(attribute.getName()).append(";\n")
-                    .append("\t}\n\n");
+            this.visitAttribute(attribute);
         }
 
         code.append("}\n");
+    }
+
+    @Override
+    public void visitAttribute(Attribute attribute) {
+        String capitalized = capitalize(attribute.getName());
+        code.append("\tpublic ").append(attribute.getType()).append(" get").append(capitalized).append("() {\n")
+                .append("\t\treturn ").append(attribute.getName()).append(";\n")
+                .append("\t}\n\n");
+
+        code.append("\tpublic void set").append(capitalized).append("(").append(attribute.getType()).append(" ")
+                .append(attribute.getName()).append(") {\n")
+                .append("\t\tthis.").append(attribute.getName()).append(" = ").append(attribute.getName()).append(";\n")
+                .append("\t}\n\n");
     }
 
 

@@ -7,4 +7,6 @@ public class Visitor {
 	}
 	public void visitEntity(Entity e) {}
 
+	public void visitAttribute(Attribute e) {}
+
 }

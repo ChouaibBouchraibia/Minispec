@@ -1,5 +1,7 @@
 package metaModel;
 
+import codeGenerator.JavaGenerator;
+
 public class Attribute implements MinispecElement {
 
 
@@ -31,6 +33,7 @@ public class Attribute implements MinispecElement {
         }
 
 
-
-
+    public void accept(Visitor visitor) {
+        visitor.visitAttribute(this);
+    }
 }

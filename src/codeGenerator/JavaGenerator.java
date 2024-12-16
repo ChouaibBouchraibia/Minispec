@@ -43,7 +43,7 @@ public class JavaGenerator extends Visitor {
 
 
         for (Attribute attribute : entity.getAttributes()) {
-            this.visitAttribute(attribute);
+            attribute.accept(this);
         }
 
         code.append("}\n");

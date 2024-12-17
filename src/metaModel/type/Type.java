@@ -11,6 +11,10 @@ public abstract class Type implements MinispecElement {
         this.id = id;
     }
 
+    public Type (String id) {
+        this.id = id;
+    }
+
     public void setId(String id) {
         this.id = id;
     }

@@ -6,6 +6,7 @@ import metaModel.Model;
 import metaModel.Visitor;
 import metaModel.type.Collection;
 import metaModel.type.Primitive;
+import metaModel.type.Reference;
 import metaModel.type.Type;
 
 import java.io.File;
@@ -87,6 +88,9 @@ public class JavaGenerator extends Visitor {
 
             // Retourne le type de collection avec son type de base
             return collectionName + "<" + baseTypeName + ">";
+        } else if ( type instanceof Reference) {
+            Reference reference = (Reference) type;
+            return reference.getEntity().getName();
         }
 
         // Cas par défaut

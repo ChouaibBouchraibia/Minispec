@@ -5,6 +5,7 @@ import javax.xml.parsers.*;
 
 import metaModel.type.Collection;
 import metaModel.type.Primitive;
+import metaModel.type.Reference;
 import metaModel.type.Type;
 import org.w3c.dom.*;
 import org.xml.sax.*;
@@ -62,6 +63,24 @@ public class XMLAnalyser {
 		return (Primitive) type;
 	}
 
+	private Reference referenceFromElement(Element e) {
+
+		String id = e.getAttribute("id");
+		Entity entity = (Entity) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("entity")));
+		Reference reference = new Reference( id, entity);
+		return reference;
+	}
+
+	private Collection collectionFromElement(Element e) {
+		String name = e.getAttribute("name");
+		String id = e.getAttribute("id");
+		Type type = (Type) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("type")));
+
+		Collection collection = new Collection(name, id, type);
+		return collection;
+	}
+
+
 	protected MinispecElement minispecElementFromXmlElement(Element e) {
 		String id = e.getAttribute("id");
 		MinispecElement result = this.minispecIndex.get(id);
@@ -73,20 +92,13 @@ public class XMLAnalyser {
             case "Attribute" -> attributeFromElement(e);
             case "Primitive" -> primitiveFromElement(e);
 			case "Collection" -> collectionFromElement(e);
+			case "Reference" -> referenceFromElement(e);
             default -> result;
         };
 		this.minispecIndex.put(id, result);
 		return result;
 	}
 
-	private Collection collectionFromElement(Element e) {
-		String name = e.getAttribute("name");
-		String id = e.getAttribute("id");
-		Type type = (Type) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("type")));
-
-		Collection collection = new Collection(name, id, type);
-		return collection;
-	}
 
 	// alimentation du map des elements XML
 	protected void firstRound(Element el) {

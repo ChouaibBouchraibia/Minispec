@@ -3,6 +3,7 @@ package metaModel;
 
 import metaModel.type.Collection;
 import metaModel.type.Primitive;
+import metaModel.type.Reference;
 
 public class Visitor {
 
@@ -16,5 +17,8 @@ public class Visitor {
 
 	public void visitCollectionType(Collection collection) {
 
+	}
+
+	public void visitReferenceType(Reference reference) {
 	}
 }

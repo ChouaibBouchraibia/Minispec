@@ -6,6 +6,9 @@
 	<!-- 	exemple : le model de l'entite #30 est pointé par son attribut model avec #1  -->
 	<Model id="#1" />
 	<Entity model="#1" id="#20" name="baLise"/>
-	<Attribute entity="#20" id="#21" name="BaliseID" type="int" />
+	<Attribute entity="#20" id="#21" name="BaliseID" type="#81" />
+	<Attribute entity="#20" id="#22" name="BaliseName" type="#80" />
+	<Primitive id="#81" name="Integer" />
+	<Primitive  id="#80" name="String" />
 	<Entity model="#1" id="#30" name="Satellite"/>
 </Root>

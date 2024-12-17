@@ -34,7 +34,7 @@ public class JavaGenerator extends Visitor {
 
         code.append("public class ").append(capitalize(entity.getName())).append(" {\n");
         for (Attribute attribute : entity.getAttributes()) {
-            code.append("\tprivate ").append(attribute.getType()).append(" ").append(attribute.getName()).append(";\n");
+            code.append("\tprivate ").append(attribute.getType().getName()).append(" ").append(attribute.getName()).append(";\n");
         }
         code.append("\n");
 
@@ -52,11 +52,11 @@ public class JavaGenerator extends Visitor {
     @Override
     public void visitAttribute(Attribute attribute) {
         String capitalized = capitalize(attribute.getName());
-        code.append("\tpublic ").append(attribute.getType()).append(" get").append(capitalized).append("() {\n")
+        code.append("\tpublic ").append(attribute.getType().getName()).append(" get").append(capitalized).append("() {\n")
                 .append("\t\treturn ").append(attribute.getName()).append(";\n")
                 .append("\t}\n\n");
 
-        code.append("\tpublic void set").append(capitalized).append("(").append(attribute.getType()).append(" ")
+        code.append("\tpublic void set").append(capitalized).append("(").append(attribute.getType().getName()).append(" ")
                 .append(attribute.getName()).append(") {\n")
                 .append("\t\tthis.").append(attribute.getName()).append(" = ").append(attribute.getName()).append(";\n")
                 .append("\t}\n\n");

@@ -1,18 +1,20 @@
 package metaModel;
 
 import codeGenerator.JavaGenerator;
+import metaModel.type.Type;
 
 public class Attribute implements MinispecElement {
 
 
         private String name;
-        private String type;
+        private Type type;
 
-        public Attribute(String name, String type) {
+        public Attribute(String name, Type type) {
             this.name = name;
             this.type = type;
         }
-        public Attribute() {
+        public Attribute(String name) {
+            this.name = name;
 
         }
 
@@ -20,7 +22,7 @@ public class Attribute implements MinispecElement {
             this.name = name;
         }
 
-        public void setType(String type) {
+        public void setType(Type type) {
             this.type = type;
         }
 
@@ -28,7 +30,7 @@ public class Attribute implements MinispecElement {
             return name;
         }
 
-        public String getType() {
+        public Type getType() {
             return type;
         }
 

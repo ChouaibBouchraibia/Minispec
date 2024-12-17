@@ -1,6 +1,10 @@
 package XMLIO;
 
+import javax.lang.model.util.AbstractTypeVisitor7;
 import javax.xml.parsers.*;
+
+import metaModel.type.Primitive;
+import metaModel.type.Type;
 import org.w3c.dom.*;
 import org.xml.sax.*;
 
@@ -41,11 +45,20 @@ public class XMLAnalyser {
 
 	protected Attribute attributeFromElement(Element e) {
 		String name = e.getAttribute("name");
-		String type = e.getAttribute("type");
+		String TypeId = e.getAttribute("type");
+
 		Entity entity = (Entity) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("entity")));
-		Attribute attribute = new Attribute(name, type);
+		Attribute attribute = new Attribute(name);
 		entity.addAttribute(attribute);
+		attribute.setType((Type) minispecElementFromXmlElement(this.xmlElementIndex.get(TypeId)));
 		return attribute;
+	}
+
+	protected Primitive primitiveFromElement(Element e) {
+		String name = e.getAttribute("name");
+		String id = e.getAttribute("id");
+		Type type = new Primitive(name, id);
+		return (Primitive) type;
 	}
 
 	protected MinispecElement minispecElementFromXmlElement(Element e) {
@@ -53,13 +66,13 @@ public class XMLAnalyser {
 		MinispecElement result = this.minispecIndex.get(id);
 		if (result != null) return result;
 		String tag = e.getTagName();
-		if (tag.equals("Model")) {
-			result = modelFromElement(e);
-		} else if (tag.equals("Entity")) {
-			result = entityFromElement(e);
-		} else if (tag.equals("Attribute")) {
-			result = attributeFromElement(e);
-		}
+        result = switch (tag) {
+            case "Model" -> modelFromElement(e);
+            case "Entity" -> entityFromElement(e);
+            case "Attribute" -> attributeFromElement(e);
+            case "Primitive" -> primitiveFromElement(e);
+            default -> result;
+        };
 		this.minispecIndex.put(id, result);
 		return result;
 	}

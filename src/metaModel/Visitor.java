@@ -15,5 +15,6 @@ public class Visitor {
     public void visitPrimitiveType(Primitive primitive) {}
 
 	public void visitCollectionType(Collection collection) {
+
 	}
 }

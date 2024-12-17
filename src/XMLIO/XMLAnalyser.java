@@ -3,6 +3,7 @@ package XMLIO;
 import javax.lang.model.util.AbstractTypeVisitor7;
 import javax.xml.parsers.*;
 
+import metaModel.type.Collection;
 import metaModel.type.Primitive;
 import metaModel.type.Type;
 import org.w3c.dom.*;
@@ -71,10 +72,20 @@ public class XMLAnalyser {
             case "Entity" -> entityFromElement(e);
             case "Attribute" -> attributeFromElement(e);
             case "Primitive" -> primitiveFromElement(e);
+			case "Collection" -> collectionFromElement(e);
             default -> result;
         };
 		this.minispecIndex.put(id, result);
 		return result;
+	}
+
+	private Collection collectionFromElement(Element e) {
+		String name = e.getAttribute("name");
+		String id = e.getAttribute("id");
+		Type type = (Type) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("type")));
+
+		Collection collection = new Collection(name, id, type);
+		return collection;
 	}
 
 	// alimentation du map des elements XML

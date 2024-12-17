@@ -15,6 +15,11 @@ public class Collection extends Type{
         this.baseType = baseType;
     }
 
+    public Collection(String name, String id, Type baseType) {
+        super(name, id);
+        this.baseType = baseType;
+    }
+
     public Integer getMin() {
         return min;
     }

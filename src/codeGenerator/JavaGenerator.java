@@ -4,11 +4,15 @@ import metaModel.Attribute;
 import metaModel.Entity;
 import metaModel.Model;
 import metaModel.Visitor;
+import metaModel.type.Collection;
+import metaModel.type.Primitive;
+import metaModel.type.Type;
 
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
+
 
 
 public class JavaGenerator extends Visitor {
@@ -34,12 +38,12 @@ public class JavaGenerator extends Visitor {
 
         code.append("public class ").append(capitalize(entity.getName())).append(" {\n");
         for (Attribute attribute : entity.getAttributes()) {
-            code.append("\tprivate ").append(attribute.getType().getName()).append(" ").append(attribute.getName()).append(";\n");
+            code.append("\tprivate ").append(formatTypeName(attribute.getType())).append(" ").append(attribute.getName()).append(";\n");
         }
         code.append("\n");
 
 
-        code.append("\tpublic ").append(entity.getName()).append("() {}\n\n");
+        code.append("\tpublic ").append(capitalize(entity.getName())).append("() {}\n\n");
 
 
         for (Attribute attribute : entity.getAttributes()) {
@@ -52,16 +56,59 @@ public class JavaGenerator extends Visitor {
     @Override
     public void visitAttribute(Attribute attribute) {
         String capitalized = capitalize(attribute.getName());
-        code.append("\tpublic ").append(attribute.getType().getName()).append(" get").append(capitalized).append("() {\n")
+
+        code.append("\tpublic ").append(formatTypeName(attribute.getType())).append(" get").append(capitalized).append("() {\n")
                 .append("\t\treturn ").append(attribute.getName()).append(";\n")
                 .append("\t}\n\n");
 
-        code.append("\tpublic void set").append(capitalized).append("(").append(attribute.getType().getName()).append(" ")
+        code.append("\tpublic void set").append(capitalized).append("(").append(formatTypeName(attribute.getType())).append(" ")
                 .append(attribute.getName()).append(") {\n")
                 .append("\t\tthis.").append(attribute.getName()).append(" = ").append(attribute.getName()).append(";\n")
                 .append("\t}\n\n");
     }
 
+    /**
+     * Formate le nom du type en fonction de son type réel
+     * @param type Le type à formater
+     * @return Le nom du type formaté
+     */
+    private String formatTypeName(Type type) {
+        if (type instanceof Primitive) {
+            // Pour les types primitifs, retourne simplement le nom
+            return type.getName();
+        } else if (type instanceof Collection) {
+            Collection Collection = (Collection) type;
+
+            // Détermine le nom de la collection
+            String collectionName = determineCollection(Collection.getName());
+
+            // Formate le type de base
+            String baseTypeName = formatTypeName(Collection.getBaseType());
+
+            // Retourne le type de collection avec son type de base
+            return collectionName + "<" + baseTypeName + ">";
+        }
+
+        // Cas par défaut
+        return type.getName();
+    }
+
+
+    private String determineCollection(String collectionName) {
+        // Mapping des types de collections
+        switch (collectionName.toLowerCase()) {
+            case "list":
+                return "List";
+            case "set":
+                return "Set";
+            case "array":
+                return "Array";
+            case "map":
+                return "Map";
+            default:
+                return "List"; // Par défaut, utilise List
+        }
+    }
 
     private String extractClassName(String classCode) {
         int start = classCode.indexOf("class") + 6;
@@ -71,7 +118,6 @@ public class JavaGenerator extends Visitor {
         }
         return null;
     }
-
 
     private String capitalize(String str) {
         return str.substring(0, 1).toUpperCase() + str.substring(1);

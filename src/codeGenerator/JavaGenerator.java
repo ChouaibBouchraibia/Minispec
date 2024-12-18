@@ -37,7 +37,17 @@ public class JavaGenerator extends Visitor {
     @Override
     public void visitEntity(Entity entity) {
 
-        code.append("public class ").append(capitalize(entity.getName())).append(" {\n");
+        code.append("//New entit "+entity.getName() +" \n" );
+
+        if (entity.getPackagePath() != null) {
+            code.append("package ").append(entity.getPackagePath()).append(";\n\n");
+        }
+
+        for (Attribute attribute : entity.getAttributes()) {
+            code.append(determineImports(attribute.getType()));
+        }
+
+        code.append("\npublic class ").append(capitalize(entity.getName())).append(" {\n");
         for (Attribute attribute : entity.getAttributes()) {
             code.append("\tprivate ").append(formatTypeName(attribute.getType())).append(" ").append(attribute.getName()).append(";\n");
         }
@@ -114,8 +124,28 @@ public class JavaGenerator extends Visitor {
         }
     }
 
+    private String determineImports(Type type) {
+        if (type instanceof Collection) {
+
+            return "import java.util." + determineCollection(((Collection) type).getName()) + ";\n";
+
+        } else if (type instanceof Reference) {
+            if (((Reference) type).getEntity().getPackagePath() != null) {
+                return "import " + ((Reference) type).getEntity().getPackagePath() + "." + ((Reference) type).getEntity().getName() + ";\n";
+
+            }
+            return "import " + ((Reference) type).getEntity().getName() + ";\n";
+        } else if (type.getPackagePath() != null) {
+            return "import " + type.getPackagePath() + "." + type.getName() + ";\n";
+        }
+
+        return "import java.util." + type.getName() + ";\n";
+
+
+    }
+
     private String extractClassName(String classCode) {
-        int start = classCode.indexOf("class") + 6;
+        int start = classCode.indexOf("entit") + 6;
         int end = classCode.indexOf(" ", start);
         if (start > 5 && end > start) {
             return classCode.substring(start, end).trim();
@@ -138,7 +168,7 @@ public class JavaGenerator extends Visitor {
         }
 
         // Sépare chaque classe Java par le mot-clé "public class"
-        String[] classes = code.toString().split("(?=public class)");
+        String[] classes = code.toString().split("(?=New entit)");
         for (String classCode : classes) {
             if (!classCode.trim().isEmpty()) {
                 // Extraire le nom de la classe

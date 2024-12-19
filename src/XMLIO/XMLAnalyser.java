@@ -39,6 +39,15 @@ public class XMLAnalyser {
 	protected Entity entityFromElement(Element e) {
 		String name = e.getAttribute("name");
 		Entity entity = new Entity();
+
+		if (e.hasAttribute("package")) {
+			entity.setPackagePath(e.getAttribute("package"));
+		}
+
+		if (e.hasAttribute("parent")) {
+			entity.setParent((Entity) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("parent"))));
+		}
+
 		entity.setName(name);
 		Model model = (Model) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("model")));
 		model.addEntity(entity);
@@ -49,6 +58,8 @@ public class XMLAnalyser {
 		String name = e.getAttribute("name");
 		String TypeId = e.getAttribute("type");
 
+
+
 		Entity entity = (Entity) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("entity")));
 		Attribute attribute = new Attribute(name);
 		entity.addAttribute(attribute);
@@ -57,9 +68,16 @@ public class XMLAnalyser {
 	}
 
 	protected Primitive primitiveFromElement(Element e) {
+
 		String name = e.getAttribute("name");
 		String id = e.getAttribute("id");
+
 		Type type = new Primitive(name, id);
+
+		if (e.hasAttribute("package")) {
+			type.setPackagePath(e.getAttribute("package"));
+		}
+
 		return (Primitive) type;
 	}
 
@@ -77,6 +95,11 @@ public class XMLAnalyser {
 		Type type = (Type) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("type")));
 
 		Collection collection = new Collection(name, id, type);
+
+		if (e.hasAttribute("package")) {
+			collection.setPackagePath(e.getAttribute("package"));
+		}
+
 		return collection;
 	}
 

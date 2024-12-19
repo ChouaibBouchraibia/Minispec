@@ -9,7 +9,4 @@ public class Primitive extends Type {
     }
 
 
-    public void accept(Visitor visitor) {
-        visitor.visitPrimitiveType(this);
-    }
 }

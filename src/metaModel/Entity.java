@@ -6,6 +6,7 @@ import java.util.List;
 public class Entity implements MinispecElement {
 	private String name;
 	private List<Attribute> attributes;
+	private Entity parent;
 
 	public Entity(String name, List<Attribute> attributes) {
 		this.name = name;
@@ -32,4 +33,13 @@ public class Entity implements MinispecElement {
 	public void accept(Visitor visitor) {
 		visitor.visitEntity(this);
 	}
+
+	public Entity getParent() {
+		return parent;
+	}
+
+	public void setParent(Entity parent) {
+		this.parent = parent;
+	}
+
 }

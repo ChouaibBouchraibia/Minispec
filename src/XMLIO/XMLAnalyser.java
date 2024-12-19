@@ -39,6 +39,11 @@ public class XMLAnalyser {
 	protected Entity entityFromElement(Element e) {
 		String name = e.getAttribute("name");
 		Entity entity = new Entity();
+		if(e.hasAttribute("parent")) {
+			Entity parent = (Entity) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("parent")));
+			entity.setParent(parent);
+		}
+
 		entity.setName(name);
 		Model model = (Model) minispecElementFromXmlElement(this.xmlElementIndex.get(e.getAttribute("model")));
 		model.addEntity(entity);

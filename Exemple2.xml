@@ -16,5 +16,5 @@
 			<Reference id="#84" entity="#11" />
 
 
-	<Entity model="#1" id="#11" name="Satellite"  />
+	<Entity model="#1" id="#11" name="Satellite" parent="#10" />
 </Root>

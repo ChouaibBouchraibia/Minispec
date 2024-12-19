@@ -18,5 +18,5 @@
 			<Reference id="#84" entity="#11" />
 
 
-	<Entity model="#1" id="#11" name="Satellite" package="com.satellite" />
+	<Entity model="#1" id="#11" name="Satellite" package="com.satellite" parent="#10"/>
 </Root>

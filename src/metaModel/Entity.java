@@ -6,6 +6,7 @@ import java.util.List;
 public class Entity implements MinispecElement {
 	private String name;
 	private String packagePath;
+	private Entity parent;
 	private List<Attribute> attributes;
 
 
@@ -43,5 +44,13 @@ public class Entity implements MinispecElement {
 
 	public void setPackagePath(String packagePath) {
 		this.packagePath = packagePath;
+	}
+
+	public Entity getParent() {
+		return parent;
+	}
+
+	public void setParent(Entity parent) {
+		this.parent = parent;
 	}
 }

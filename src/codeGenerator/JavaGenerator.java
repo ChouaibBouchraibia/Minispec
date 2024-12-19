@@ -47,7 +47,15 @@ public class JavaGenerator extends Visitor {
             code.append(determineImports(attribute.getType()));
         }
 
-        code.append("\npublic class ").append(capitalize(entity.getName())).append(" {\n");
+        if (entity.getParent() != null) {
+            code.append("\npublic class ").append(capitalize(entity.getName())).append(" extends ").append(entity.getParent().getName()).append(" {\n");
+
+        }else
+        {
+            code.append("\npublic class ").append(capitalize(entity.getName())).append(" {\n");
+
+        }
+
         for (Attribute attribute : entity.getAttributes()) {
             code.append("\tprivate ").append(formatTypeName(attribute.getType())).append(" ").append(attribute.getName()).append(";\n");
         }
